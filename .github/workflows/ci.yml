@@ -22,3 +22,34 @@ jobs:
       - run: pnpm build:all
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:e2e
+
+  # Tag vX.Y.Z: publica a Release com um zip por navegador, só depois da validação completa.
+  release:
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.32.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Conferir tag = versão do package.json
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME != v$version"; exit 1; }
+      - run: pnpm zip:chrome
+      - run: pnpm zip:edge
+      - run: pnpm zip:firefox
+      - name: Publicar release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" .output/*-{chrome,edge,firefox}.zip \
+            --title "$GITHUB_REF_NAME" --generate-notes --verify-tag

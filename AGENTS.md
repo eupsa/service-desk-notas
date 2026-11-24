@@ -27,6 +27,8 @@
 - Manter a versão dos manifests gerados alinhada à versão de `package.json`; atualizar o lockfile quando necessário.
 - Criar uma tag Git anotada no formato `vX.Y.Z` para cada novo commit, com a mesma versão da extensão, apontando para esse commit. Nunca reutilizar ou mover tags publicadas.
 - Ao publicar os commits no GitHub, enviar também as tags correspondentes. Não considerar o versionamento publicado enquanto as tags existirem apenas localmente.
+- Antes de todo commit, executar localmente a mesma suíte completa do CI (`.github/workflows/ci.yml`), na mesma ordem e sem pular etapas: `pnpm install --frozen-lockfile`, `pnpm typecheck`, `pnpm lint`, `pnpm format:check`, `pnpm test`, `pnpm build:all` e `pnpm test:e2e`. Não commitar com qualquer etapa falhando; se o CI ganhar ou perder etapas, atualizar esta lista junto.
+- Cada tag `vX.Y.Z` enviada ao GitHub dispara o job `release` do CI, que repete a validação completa, gera um zip por navegador (`pnpm zip:chrome`, `zip:edge`, `zip:firefox`) e publica a Release da tag com esses arquivos. A tag precisa corresponder à versão do `package.json`, senão a release falha.
 
 <!-- CODEGRAPH_START -->
 

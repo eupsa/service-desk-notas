@@ -15,7 +15,11 @@ Funciona 100% no seu navegador: sem conta, sem senha, sem servidor e sem sincron
 
 ## Instalação
 
-A extensão ainda não está nas lojas. Você gera os arquivos e carrega no navegador em modo desenvolvedor, o que leva uns 5 minutos.
+A extensão ainda não está nas lojas; ela é carregada no navegador em modo desenvolvedor.
+
+**Jeito mais rápido:** baixe o zip do seu navegador na [última release](https://github.com/eupsa/service-desk-notas/releases/latest) (`…-chrome.zip`, `…-edge.zip` ou `…-firefox.zip`), extraia numa pasta fixa e pule para o [passo 3](#3-carregar-no-navegador), escolhendo essa pasta. No Firefox, dá para carregar o zip direto, sem extrair.
+
+Para gerar a partir do código-fonte, siga os passos abaixo (uns 5 minutos).
 
 ### 1. Pré-requisitos
 
