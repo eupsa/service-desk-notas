@@ -1,0 +1,213 @@
+@import 'tailwindcss';
+@custom-variant dark (&:where(.dark, .dark *));
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-input: var(--input);
+  --color-ring: var(--primary);
+  --color-surface: var(--surface);
+  --color-secondary: var(--secondary);
+  --color-success: var(--success);
+  --color-field-border: var(--field-border);
+}
+:root {
+  color-scheme: light;
+  --background: #ffffff;
+  --surface: #ffffff;
+  --foreground: #111827;
+  --primary: #1d4ed8;
+  --primary-foreground: #ffffff;
+  --muted: #f9fafb;
+  --input: #e5e7eb;
+  --secondary: #4b5563;
+  --field: #ffffff;
+  --field-border: #8a94a6;
+  --placeholder: #6b7280;
+  --selected: #eff6ff;
+  --success: #15803d;
+  font-family: system-ui, 'Segoe UI', sans-serif;
+  font-synthesis: none;
+}
+.dark {
+  color-scheme: dark;
+  --background: #111827;
+  --surface: #111827;
+  --foreground: #f3f4f6;
+  --primary: #93b4ff;
+  --primary-foreground: #0b1220;
+  --muted: #1f2937;
+  --input: #374151;
+  --secondary: #b4bcc8;
+  --field: #111827;
+  --field-border: #7b8494;
+  --placeholder: #9ca3af;
+  --selected: #1e293b;
+  --success: #4ade80;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  min-width: 280px;
+}
+input,
+textarea,
+select {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+  background: var(--field);
+  padding: 10px 12px;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition:
+    border-color 140ms,
+    box-shadow 140ms,
+    background-color 140ms;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder);
+  opacity: 1;
+}
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--primary);
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-color: var(--primary);
+  background: var(--surface);
+}
+summary:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+label,
+legend {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--secondary);
+  margin-bottom: 6px;
+  padding: 0;
+}
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+/* Seções abertas/fechadas: divisórias em vez de cartões. */
+.form-section {
+  border-bottom: 1px solid var(--input);
+}
+.form-section[open] {
+  padding-bottom: 16px;
+}
+.form-section > summary {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.form-section > summary::-webkit-details-marker {
+  display: none;
+}
+.form-section[open] > summary > .chevron {
+  transform: rotate(180deg);
+}
+/* Grupo de opções lado a lado (radios nativos). */
+.segmented {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  overflow: hidden;
+  border: 1px solid var(--field-border);
+  border-radius: 8px;
+}
+.segmented > label {
+  position: relative;
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 8px;
+  border-left: 1px solid var(--field-border);
+  color: var(--foreground);
+  text-align: center;
+  cursor: pointer;
+}
+.segmented > label:first-child {
+  border-left: 0;
+}
+.segmented input {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.segmented > label:has(input:checked) {
+  background: var(--selected);
+  box-shadow: inset 0 -3px 0 var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+.segmented > label:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+.compact input,
+.compact textarea,
+.compact select {
+  padding: 8px 11px;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+@media (max-width: 320px) {
+  .segmented {
+    grid-auto-flow: row;
+  }
+  .segmented > label {
+    border-left: 0;
+    border-top: 1px solid var(--field-border);
+  }
+  .segmented > label:first-child {
+    border-top: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
