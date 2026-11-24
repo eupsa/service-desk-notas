@@ -23,6 +23,18 @@ test.beforeEach(async () => {
     (await context.waitForEvent('serviceworker'));
   base = `chrome-extension://${new URL(worker.url()).host}`;
 });
+test('keeps focus while typing across autosaves', async () => {
+  const page = await context.newPage();
+  await page.goto(base + '/sidepanel.html');
+  for (const label of ['Título / resumo', 'Descrição']) {
+    const field = page.getByLabel(label, { exact: true });
+    await field.click();
+    // Digita devagar para atravessar vários ciclos de salvamento (400 ms).
+    await page.keyboard.type('abcdefghij', { delay: 250 });
+    await expect(field).toBeFocused();
+    await expect(field).toHaveValue(/abcdefghij$/);
+  }
+});
 test.afterEach(async () => {
   await context?.close();
   if (profile) {

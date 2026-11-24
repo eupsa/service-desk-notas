@@ -47,7 +47,9 @@ export function useWorkspace() {
       !snapshot ||
       !observed ||
       running.current ||
-      observed.revision === latest.current?.revision
+      // A notificação do próprio salvamento pode chegar atrasada com a revisão
+      // anterior; só revisões mais novas vêm de outra janela.
+      observed.revision <= (latest.current?.revision ?? 0)
     )
       return;
     if (dirty.current) setStatus('conflict');
